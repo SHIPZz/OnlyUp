@@ -61,6 +61,11 @@ sysinfo.txt
 *.unitypackage
 *.app
 
+Assets/ImportResources/PolygonSciFiCity
+Assets/ImportResources/PolygonCity
+Assets/ImportResources/PolygonFantasyHeroCharacters
+
+
 # Crashlytics generated file
 crashlytics-build.properties
 

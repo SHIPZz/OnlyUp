@@ -5,5 +5,6 @@
         public const int Floor = 7;
         public const int Enviroment = 17;
         public const int DefaultWorld = 6;
+        public const int Water = 18;
     }
 }

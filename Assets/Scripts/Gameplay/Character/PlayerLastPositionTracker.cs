@@ -1,5 +1,4 @@
 using Constants;
-using Services;
 using Services.Providers;
 using UnityEngine;
 using Zenject;
@@ -12,15 +11,11 @@ public class PlayerLastPositionTracker : MonoBehaviour
     private DataProvider _dataProvider;
 
     [Inject]
-    private void Construct(DataProvider dataProvider)
-    {
+    private void Construct(DataProvider dataProvider) => 
         _dataProvider = dataProvider;
-    }
 
-    private void Update()
-    {
+    private void Update() => 
         StartSavingLastPosition();
-    }
 
     private void StartSavingLastPosition()
     {

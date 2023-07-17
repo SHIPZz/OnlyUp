@@ -6,6 +6,7 @@ using Invector;
 using Invector.vCharacterController;
 using Services.Factories;
 using Services.Providers;
+using UI.Ad;
 using UI.Audio;
 using UI.Localization;
 using UnityEngine;
@@ -20,16 +21,18 @@ namespace GameInit
         private readonly DataProvider _dataProvider;
         private readonly PlayerProvider _playerProvider;
         private readonly AudioVolumeView _audioVolumeView;
-        private readonly PlayerLastPositionRestorerHandler _playerLastPositionRestorerHandler;
-        private LocalizationChanger _localizationChanger;
+        private readonly LocalizationChanger _localizationChanger;
+        private readonly AdPresenter _adPresenter;
 
         public GameInit(LocationProvider locationProvider, GameFactory gameFactory, DataProvider dataProvider,
-            PlayerProvider playerProvider,LocalizationChanger localizationChanger  , AudioVolumeView audioVolumeView,
-            PlayerLastPositionRestorerHandler playerLastPositionRestorerHandler)
+            PlayerProvider playerProvider,
+            LocalizationChanger localizationChanger, 
+            AudioVolumeView audioVolumeView,
+            AdPresenter adPresenter)
         {
+            _adPresenter = adPresenter;
             _localizationChanger = localizationChanger;
             _audioVolumeView = audioVolumeView;
-            _playerLastPositionRestorerHandler = playerLastPositionRestorerHandler;
             _locationProvider = locationProvider;
             _gameFactory = gameFactory;
             _dataProvider = dataProvider;
@@ -38,37 +41,28 @@ namespace GameInit
 
         public void Initialize()
         {
-            // InterstitialAd.Show();
             InitializeLocalization();
             
             WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
             Vector3 targetSpawnPosition = GetTargetSpawnPosition();
             
             vThirdPersonController vThirdPersonController = InitializePlayer(targetSpawnPosition);
+
             InitializePlayerProvider(vThirdPersonController);
-            InitializePlayerPositionRestorer(vThirdPersonController);
             InitializeAudio();
         }
 
         public void Dispose()
         {
             WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
+            _adPresenter.Dispose();
         }
 
-        private void InitializePlayerPositionRestorer(vThirdPersonController vThirdPersonController)
-        {
-            _playerLastPositionRestorerHandler.SetPlayer(vThirdPersonController);
-        }
-
-        private void InitializeAudio()
-        {
+        private void InitializeAudio() => 
             _audioVolumeView.SetStartValue(_dataProvider.GetVolume());
-        }
 
-        private void InitializeLocalization()
-        {
+        private void InitializeLocalization() => 
             _localizationChanger.SetStartLanguage(_dataProvider.GetLanguage());
-        }
 
         private Vector3 GetTargetSpawnPosition()
         {

@@ -17,11 +17,20 @@ namespace UI.Audio
             _playerProvider.PlayerFootStepInstalled += SetFootStep;
         }
 
+        public float LastVolumeValue { get; private set; }
+
         public void Change(float value)
         {
             _footStep.Volume = value;
+            LastVolumeValue = value;
             _dataProvider.SaveVolume(value);
         }
+
+        public void Disable() =>
+            _footStep.Volume = 0f;
+
+        public void Enable() =>
+            _footStep.Volume = LastVolumeValue;
 
         private void SetFootStep(vFootStep vFootStep) =>
             _footStep = vFootStep;

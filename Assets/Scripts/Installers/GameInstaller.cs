@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using Agava.YandexGames;
 using Gameplay;
 using Gameplay.Character;
+using Services;
 using Services.Factories;
 using Services.Providers;
-using Services.SaveSystems;
 using UnityEngine;
 using Zenject;
 
@@ -23,21 +20,21 @@ namespace Installers
             BindPlayerFactory();
             BindAssetProvider();
             BindPlayerProvider();
-            BindPlayerRestorerHandler();
             BindPlayerDeactivatorHandler();
+            BindPauseOnAd();
+        }
+
+        private void BindPauseOnAd()
+        {
+            Container
+                .BindInterfacesAndSelfTo<PauseOnAd>()
+                .AsSingle();
         }
 
         private void BindPlayerDeactivatorHandler()
         {
             Container
                 .BindInterfacesAndSelfTo<PlayerDeactivatorHandler>()
-                .AsSingle();
-        }
-
-        private void BindPlayerRestorerHandler()
-        {
-            Container
-                .BindInterfacesAndSelfTo<PlayerLastPositionRestorerHandler>()
                 .AsSingle();
         }
 

@@ -3,7 +3,6 @@ using DG.Tweening;
 using Gameplay.Character;
 using Services.Providers;
 using Services.UIServices;
-using UnityEngine;
 
 namespace UI.Ad
 {
@@ -22,18 +21,17 @@ namespace UI.Ad
             _playerProvider.PlayerRaycastDownInstalled += SetPlayerRaycastDown;
         }
 
+        public void Dispose()
+        {
+            // _playerRaycastDown.EnviromentHit -= SetCanOpenWindow;
+            // _playerRaycastDown.DefaultWorldHit -= OpenWindow;
+        }
+
         private void SetPlayerRaycastDown(PlayerRaycastDownHitChecker playerRaycastDownHitChecker)
         {
-            Debug.Log(playerRaycastDownHitChecker);
             _playerRaycastDown = playerRaycastDownHitChecker;
             _playerRaycastDown.EnviromentHit += SetCanOpenWindow;
             _playerRaycastDown.DefaultWorldHit += OpenWindow;
-        }
-
-        public void Dispose()
-        {
-            _playerRaycastDown.EnviromentHit -= SetCanOpenWindow;
-            _playerRaycastDown.DefaultWorldHit -= OpenWindow;
         }
 
         private void OpenWindow()

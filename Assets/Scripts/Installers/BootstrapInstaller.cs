@@ -23,11 +23,11 @@ namespace Installers
 
         private void BindSaveSystem()
         {
-            // if (PlayerAccount.IsAuthorized)
-            //     Container.Bind<ISaveSystem>()
-            //         .To<YandexSaveSystem>()
-            //         .AsSingle();
-            // else
+            if (PlayerAccount.IsAuthorized)
+                Container.Bind<ISaveSystem>()
+                    .To<YandexSaveSystem>()
+                    .AsSingle();
+            else
                 Container
                     .Bind<ISaveSystem>()
                     .To<PlayerPrefsSystem>()

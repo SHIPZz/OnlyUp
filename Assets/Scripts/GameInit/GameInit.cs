@@ -45,8 +45,13 @@ namespace GameInit
             _dataProvider.DataReceived -= Init;
         }
 
-        private void Init()
+        private async void Init()
         {
+            while (!YandexGamesSdk.IsInitialized)
+            {
+               await Task.Yield();
+            }
+            
             LocalizationManager.CurrentLanguage = YandexGamesSdk.Environment.i18n.lang;
 
             WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;

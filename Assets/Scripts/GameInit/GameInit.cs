@@ -39,6 +39,12 @@ namespace GameInit
             _dataProvider.DataReceived += Init;
         }
 
+        public void Dispose()
+        {
+            WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
+            _dataProvider.DataReceived -= Init;
+        }
+
         private void Init()
         {
             LocalizationManager.CurrentLanguage = YandexGamesSdk.Environment.i18n.lang;
@@ -50,12 +56,6 @@ namespace GameInit
 
             InitializePlayerProvider(vThirdPersonController);
             InitializeAudio();
-        }
-
-        public void Dispose()
-        {
-            WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
-            _dataProvider.DataReceived -= Init;
         }
 
         private void InitializeAudio() =>

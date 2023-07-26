@@ -1,7 +1,8 @@
 ﻿using UI;
+using UI.Windows;
 using UnityEngine;
 
-namespace Services
+namespace Services.OnEventHandlers
 {
     public class PauseOnWindow : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using Services.UIServices;
 using Zenject;
 
-namespace UI.Settings
+namespace UI.Windows.Settings
 {
     public class SettingWindowPresenter : IInitializable, IDisposable
     {
@@ -27,10 +27,16 @@ namespace UI.Settings
             _settingView.CloseClicked -= CloseWindow;
         }
 
-        private void OpenWindow() =>
+        private void OpenWindow()
+        {
+            _windowService.CloseAll();
             _windowService.Open(WindowTypeId.SettingWindow);
+        }
 
-        private void CloseWindow() =>
+        private void CloseWindow()
+        {
+            _windowService.OpenHud();
             _windowService.Close(WindowTypeId.SettingWindow);
+        }
     }
 }

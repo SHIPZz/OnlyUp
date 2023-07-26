@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Agava.WebUtility;
 using Agava.YandexGames;
 using Gameplay.Character;
+using I2.Loc;
 using Invector;
 using Invector.vCharacterController;
 using Services.Factories;
 using Services.Providers;
-using UI.Ad;
 using UI.Audio;
 using UI.Localization;
 using UnityEngine;
@@ -21,17 +22,11 @@ namespace GameInit
         private readonly DataProvider _dataProvider;
         private readonly PlayerProvider _playerProvider;
         private readonly AudioVolumeView _audioVolumeView;
-        private readonly LocalizationChanger _localizationChanger;
-        private readonly AdPresenter _adPresenter;
 
         public GameInit(LocationProvider locationProvider, GameFactory gameFactory, DataProvider dataProvider,
             PlayerProvider playerProvider,
-            LocalizationChanger localizationChanger, 
-            AudioVolumeView audioVolumeView,
-            AdPresenter adPresenter)
+            AudioVolumeView audioVolumeView)
         {
-            _adPresenter = adPresenter;
-            _localizationChanger = localizationChanger;
             _audioVolumeView = audioVolumeView;
             _locationProvider = locationProvider;
             _gameFactory = gameFactory;
@@ -41,11 +36,16 @@ namespace GameInit
 
         public void Initialize()
         {
-            InitializeLocalization();
-            
+            _dataProvider.DataReceived += Init;
+        }
+
+        private void Init()
+        {
+            LocalizationManager.CurrentLanguage = YandexGamesSdk.Environment.i18n.lang;
+
             WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
             Vector3 targetSpawnPosition = GetTargetSpawnPosition();
-            
+
             vThirdPersonController vThirdPersonController = InitializePlayer(targetSpawnPosition);
 
             InitializePlayerProvider(vThirdPersonController);
@@ -55,23 +55,15 @@ namespace GameInit
         public void Dispose()
         {
             WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
-            _adPresenter.Dispose();
+            _dataProvider.DataReceived -= Init;
         }
 
-        private void InitializeAudio() => 
+        private void InitializeAudio() =>
             _audioVolumeView.SetStartValue(_dataProvider.GetVolume());
-
-        private void InitializeLocalization() => 
-            _localizationChanger.SetStartLanguage(_dataProvider.GetLanguage());
 
         private Vector3 GetTargetSpawnPosition()
         {
-            Vector3 targetSpawnPosition;
-
-            if (_dataProvider.GetLastPosition() == Vector3.zero)
-                targetSpawnPosition = _locationProvider.PlayerSpawnPosition.position;
-            else
-                targetSpawnPosition = _dataProvider.GetLastPosition();
+            Vector3 targetSpawnPosition = _locationProvider.PlayerSpawnPosition.position;
 
             return targetSpawnPosition;
         }

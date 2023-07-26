@@ -1,6 +1,7 @@
 ﻿using System;
 using Services;
 using Services.Providers;
+using UI.Windows.Ad;
 using Zenject;
 
 namespace Gameplay.Character
@@ -8,33 +9,35 @@ namespace Gameplay.Character
     public class PlayerPositionRestorerMediator : IInitializable, IDisposable
     {
         private readonly LocationProvider _locationProvider;
-        private readonly AdsButtonHandler _adsButtonHandler;
+        private readonly AdShowerOnButton _adShowerOnButton;
         private readonly DataProvider _dataProvider;
         private readonly IPlayerPositionRestorer _playerPositionRestorer;
         private PlayerRaycastDownHitChecker _playerRaycastDownHitChecker;
 
         public PlayerPositionRestorerMediator(LocationProvider locationProvider, 
-            AdsButtonHandler adsButtonHandler,
+            AdShowerOnButton adShowerOnButton,
             IPlayerPositionRestorer playerPositionRestorer, DataProvider dataProvider,
             PlayerRaycastDownHitChecker playerRaycastDownHitChecker)
         {
             _dataProvider = dataProvider;
             _locationProvider = locationProvider;
-            _adsButtonHandler = adsButtonHandler;
+            _adShowerOnButton = adShowerOnButton;
             _playerPositionRestorer = playerPositionRestorer;
             _playerRaycastDownHitChecker = playerRaycastDownHitChecker;
-            _playerRaycastDownHitChecker.WaterHit += RestoreToSpawnPosition;
         }
 
         public void Initialize()
         {
-            _adsButtonHandler.AdEnded += RestoreToLastPosition;
+            _adShowerOnButton.AdEnded += RestoreToLastPosition;
+            _playerRaycastDownHitChecker.WaterHit += RestoreToSpawnPosition;
+            _playerRaycastDownHitChecker.NullHit += RestoreToSpawnPosition;
         }
 
         public void Dispose()
         {
-            _adsButtonHandler.AdEnded -= RestoreToLastPosition;
+            _adShowerOnButton.AdEnded -= RestoreToLastPosition;
             _playerRaycastDownHitChecker.WaterHit -= RestoreToSpawnPosition;
+            _playerRaycastDownHitChecker.NullHit -= RestoreToSpawnPosition;
         }
         
         private void RestoreToLastPosition() => 

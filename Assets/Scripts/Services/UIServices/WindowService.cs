@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Services.Providers;
 using UI;
+using UI.Windows;
 using UnityEngine;
 
 namespace Services.UIServices

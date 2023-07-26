@@ -1,14 +1,15 @@
 using Gameplay.Character;
 using Services;
+using Services.OnEventHandlers;
 using Services.Providers;
 using Services.UIServices;
 using UI;
-using UI.Ad;
 using UI.Audio;
-using UI.InputUI;
 using UI.Localization;
-using UI.Settings;
-using UI.Victory;
+using UI.Windows.Ad;
+using UI.Windows.InputUI;
+using UI.Windows.Settings;
+using UI.Windows.Victory;
 using UnityEngine;
 using Zenject;
 
@@ -21,7 +22,7 @@ namespace Installers
         [SerializeField] private PlayerEndPointChecker _playerEndPointChecker;
         [SerializeField] private LocalizationView _localizationView;
         [SerializeField] private SettingView _settingView;
-        [SerializeField] private AdsButtonHandler _adsButtonHandler;
+        [SerializeField] private AdButtonView _adButtonView;
         
         public override void InstallBindings()
         {
@@ -34,6 +35,22 @@ namespace Installers
             BindLocalizationUI();
             BindSettingUI();
             // BindMobileInputUI();
+            BindScreenTouchBlocker();
+            BindShowerCursorOn();
+        }
+
+        private void BindShowerCursorOn()
+        {
+            Container
+                .BindInterfacesAndSelfTo<ShowerCursorOn>()
+                .AsSingle();
+        }
+
+        private void BindScreenTouchBlocker()
+        {
+            Container
+                .BindInterfacesAndSelfTo<ScreenTouchBlocker>()
+                .AsSingle();
         }
 
         private void BindMobileInputUI()
@@ -95,8 +112,12 @@ namespace Installers
             Container
                 .BindInterfacesAndSelfTo<AdPresenter>()
                 .AsSingle();
+            
+            Container.BindInstance(_adButtonView);
 
-            Container.BindInstance(_adsButtonHandler);
+            Container
+                .BindInterfacesAndSelfTo<AdShowerOnButton>()
+                .AsSingle();
         }
 
         private void BindWindowService()

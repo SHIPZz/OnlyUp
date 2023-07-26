@@ -2,6 +2,7 @@ using Gameplay;
 using Gameplay.Character;
 using Services;
 using Services.Factories;
+using Services.OnEventHandlers;
 using Services.Providers;
 using UnityEngine;
 using Zenject;

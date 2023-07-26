@@ -4,6 +4,7 @@ using Agava.WebUtility;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 namespace Invector.vCharacterController
 {
@@ -82,6 +83,7 @@ namespace Invector.vCharacterController
         protected bool withoutMainCamera;
         internal bool lockUpdateMoveDirection; // lock the method UpdateMoveDirection
         private Rigidbody _rigidBody;
+        private ScreenTouchBlocker _screenTouchBlocker;
 
         public Camera cameraMain
         {
@@ -464,19 +466,6 @@ namespace Invector.vCharacterController
         {
             if (!lockMoveInput)
             {
-                // if (Device.IsMobile)
-                // {
-                //     cc.input.x = SimpleInput.GetAxisRaw("Horizontal");
-                //     cc.input.z = SimpleInput.GetAxisRaw("Vertical");
-                // }
-                // else
-                // {
-                //     cc.input.x = horizontalInput.GetAxisRaw();
-                //     cc.input.z = verticallInput.GetAxisRaw();
-                // }
-                
-                // cc.input.x = SimpleInput.GetAxisRaw("Horizontal");
-                // cc.input.z = SimpleInput.GetAxisRaw("Vertical");
                 cc.input.x = horizontalInput.GetAxisRaw();
                 cc.input.z = verticallInput.GetAxisRaw();
                 // gets input
@@ -587,6 +576,12 @@ namespace Invector.vCharacterController
         #endregion
 
         #region Camera Methods
+
+        [Inject]
+        private void Construct(ScreenTouchBlocker screenTouchBlocker)
+        {
+            _screenTouchBlocker = screenTouchBlocker;
+        }
 
         public virtual void CameraInput()
         {

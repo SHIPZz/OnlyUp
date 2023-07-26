@@ -153,6 +153,7 @@ namespace Invector.vCamera
             }
          
         }
+
         /// <summary>
         /// Lock camera angle based to the <seealso cref="currentTarget"/>. if you need just to reset angle use <seealso cref="ResetAngle"/>
         /// </summary>

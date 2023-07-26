@@ -2,7 +2,7 @@
 using Services.UIServices;
 using Zenject;
 
-namespace UI.InputUI
+namespace UI.Windows.InputUI
 {
     public class MobileInputPresenter : IInitializable
     {

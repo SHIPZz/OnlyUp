@@ -1,8 +1,8 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
-using System;
 
-namespace UI
+namespace UI.Windows
 {
     public class Window : MonoBehaviour
     {

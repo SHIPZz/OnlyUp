@@ -2,7 +2,7 @@
 using Services.UIServices;
 using Zenject;
 
-namespace UI.Victory
+namespace UI.Windows.Victory
 {
     public class VictoryPresenter : IInitializable, IDisposable
     {

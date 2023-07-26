@@ -1,4 +1,5 @@
-﻿using Services.SaveSystems;
+﻿using System;
+using Services.SaveSystems;
 using UnityEngine;
 
 namespace Services.Providers
@@ -8,9 +9,13 @@ namespace Services.Providers
         private readonly ISaveSystem _saveSystem;
         private GameData _gameData = new();
 
+        public event Action DataReceived; 
+
         public DataProvider(ISaveSystem saveSystem)
         {
             _saveSystem = saveSystem;
+            Debug.Log(_saveSystem);
+            Debug.Log(_saveSystem.GetType());
 
             LoadInitialData();
         }
@@ -51,6 +56,7 @@ namespace Services.Providers
         private async void LoadInitialData()
         {
             _gameData = await _saveSystem.Load();
+            DataReceived?.Invoke();
         }
     }
 }

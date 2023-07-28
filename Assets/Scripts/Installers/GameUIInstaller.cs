@@ -17,6 +17,7 @@ namespace Installers
 {
     public class GameUIInstaller : MonoInstaller
     {
+        [SerializeField] private Canvas _mainUI;
         [SerializeField] private WindowProvider _windowProvider;
         [SerializeField] private AudioVolumeView _audioVolumeView;
         [SerializeField] private PlayerEndPointChecker _playerEndPointChecker;
@@ -37,21 +38,21 @@ namespace Installers
             // BindMobileInputUI();
             BindScreenTouchBlocker();
             BindShowerCursorOn();
+            BindMainUI();
         }
 
-        private void BindShowerCursorOn()
-        {
+        private void BindMainUI() => 
+            Container.BindInstance(_mainUI);
+
+        private void BindShowerCursorOn() =>
             Container
                 .BindInterfacesAndSelfTo<ShowerCursorOn>()
                 .AsSingle();
-        }
 
-        private void BindScreenTouchBlocker()
-        {
+        private void BindScreenTouchBlocker() =>
             Container
                 .BindInterfacesAndSelfTo<ScreenTouchBlocker>()
                 .AsSingle();
-        }
 
         private void BindMobileInputUI()
         {
@@ -81,18 +82,14 @@ namespace Installers
                 .AsSingle();
         }
 
-        private void BindPlayerEndPointChecker()
-        {
+        private void BindPlayerEndPointChecker() =>
             Container
                 .BindInstance(_playerEndPointChecker);
-        }
 
-        private void BindVictoryUI()
-        {
+        private void BindVictoryUI() =>
             Container
                 .BindInterfacesAndSelfTo<VictoryPresenter>()
                 .AsSingle();
-        }
 
         private void BindAudioChanging()
         {
@@ -120,16 +117,12 @@ namespace Installers
                 .AsSingle();
         }
 
-        private void BindWindowService()
-        {
+        private void BindWindowService() =>
             Container
                 .Bind<WindowService>()
                 .AsSingle();
-        }
 
-        private void BindWindowProvider()
-        {
+        private void BindWindowProvider() => 
             Container.BindInstance(_windowProvider);
-        }
     }
 }

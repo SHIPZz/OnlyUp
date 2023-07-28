@@ -1,5 +1,6 @@
 using Gameplay;
 using Gameplay.Character;
+using Initialize;
 using Services;
 using Services.Factories;
 using Services.OnEventHandlers;
@@ -12,7 +13,7 @@ namespace Installers
     public class GameInstaller : MonoInstaller
     {
         [SerializeField] private Transform _playerSpawnPosition;
-        
+
         public override void InstallBindings()
         {
             BindLocationProvider();

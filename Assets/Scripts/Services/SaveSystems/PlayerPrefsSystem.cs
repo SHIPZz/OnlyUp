@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Services.SaveSystems
@@ -15,7 +16,7 @@ namespace Services.SaveSystems
             PlayerPrefs.Save();
         }
 
-        public async Task<GameData> Load()
+        public async UniTask<GameData> Load()
         {
             if (PlayerPrefs.HasKey(DataKey))
             {
@@ -24,7 +25,7 @@ namespace Services.SaveSystems
                 return gameData;
             }
 
-            await Task.Yield();
+            await UniTask.Yield();
 
             return new GameData();
         }

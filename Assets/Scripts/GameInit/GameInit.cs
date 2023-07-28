@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Agava.WebUtility;
 using Agava.YandexGames;
+using Cysharp.Threading.Tasks;
 using Gameplay.Character;
-using I2.Loc;
+using Initialize;
 using Invector;
 using Invector.vCharacterController;
 using Services.Factories;
 using Services.Providers;
 using UI.Audio;
-using UI.Localization;
 using UnityEngine;
 using Zenject;
 
@@ -22,11 +22,13 @@ namespace GameInit
         private readonly DataProvider _dataProvider;
         private readonly PlayerProvider _playerProvider;
         private readonly AudioVolumeView _audioVolumeView;
+        private readonly Canvas _mainUi;
 
         public GameInit(LocationProvider locationProvider, GameFactory gameFactory, DataProvider dataProvider,
             PlayerProvider playerProvider,
-            AudioVolumeView audioVolumeView)
+            AudioVolumeView audioVolumeView, Canvas mainUi)
         {
+            _mainUi = mainUi;
             _audioVolumeView = audioVolumeView;
             _locationProvider = locationProvider;
             _gameFactory = gameFactory;
@@ -36,32 +38,35 @@ namespace GameInit
 
         public void Initialize()
         {
-            _dataProvider.DataReceived += Init;
+            Debug.Log("initialize/");
+            InitWithDelay().Forget();
         }
 
         public void Dispose()
         {
             WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
-            _dataProvider.DataReceived -= Init;
         }
 
-        private async void Init()
+        private async UniTask InitWithDelay()
         {
-            while (!YandexGamesSdk.IsInitialized)
-            {
-               await Task.Yield();
-            }
-            
-            LocalizationManager.CurrentLanguage = YandexGamesSdk.Environment.i18n.lang;
+            await _dataProvider.LoadInitialData();
+            Init();
+        }
 
+        private void Init()
+        {
             WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
             Vector3 targetSpawnPosition = GetTargetSpawnPosition();
 
             vThirdPersonController vThirdPersonController = InitializePlayer(targetSpawnPosition);
 
+            InitMainUI(_mainUi.GetComponent<CanvasGroup>());
             InitializePlayerProvider(vThirdPersonController);
             InitializeAudio();
         }
+
+        private void InitMainUI(CanvasGroup mainUI) =>
+            mainUI.alpha = 1;
 
         private void InitializeAudio() =>
             _audioVolumeView.SetStartValue(_dataProvider.GetVolume());

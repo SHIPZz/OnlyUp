@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
 using Services.SaveSystems;
 using UnityEngine;
 
@@ -9,15 +9,9 @@ namespace Services.Providers
         private readonly ISaveSystem _saveSystem;
         private GameData _gameData = new();
 
-        public event Action DataReceived; 
-
         public DataProvider(ISaveSystem saveSystem)
         {
             _saveSystem = saveSystem;
-            Debug.Log(_saveSystem);
-            Debug.Log(_saveSystem.GetType());
-
-            LoadInitialData();
         }
 
         public void SaveVolume(float volume)
@@ -53,10 +47,9 @@ namespace Services.Providers
             return targetPosition;
         }
 
-        private async void LoadInitialData()
+        public async UniTask LoadInitialData()
         {
             _gameData = await _saveSystem.Load();
-            DataReceived?.Invoke();
         }
     }
 }

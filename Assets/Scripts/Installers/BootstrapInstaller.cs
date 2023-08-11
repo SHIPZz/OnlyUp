@@ -13,12 +13,10 @@ namespace Installers
             BindSaveSystem();
         }
 
-        private void BindDataProvider()
-        {
+        private void BindDataProvider() =>
             Container
                 .Bind<DataProvider>()
                 .AsSingle();
-        }
 
         private void BindSaveSystem()
         {

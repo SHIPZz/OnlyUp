@@ -9,10 +9,8 @@ namespace Services.Providers
         private readonly ISaveSystem _saveSystem;
         private GameData _gameData = new();
 
-        public DataProvider(ISaveSystem saveSystem)
-        {
+        public DataProvider(ISaveSystem saveSystem) => 
             _saveSystem = saveSystem;
-        }
 
         public void SaveVolume(float volume)
         {
@@ -28,10 +26,7 @@ namespace Services.Providers
             _gameData.Language = language;
             _saveSystem.Save(_gameData);
         }
-
-        public string GetLanguage() =>
-            _gameData.Language;
-
+        
         public void SaveLastPosition(Vector3 targetPosition)
         {
             _gameData.PositionX = targetPosition.x;

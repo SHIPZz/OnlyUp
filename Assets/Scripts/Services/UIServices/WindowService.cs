@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using DG.Tweening;
 using Services.Providers;
-using UI;
 using UI.Windows;
-using UnityEngine;
 
 namespace Services.UIServices
 {
@@ -22,23 +19,8 @@ namespace Services.UIServices
             FillList(_windows);
         }
 
-        public void OpenHudWindow(WindowTypeId windowTypeId) =>
-            Open(_hudWindows, windowTypeId);
-
-        public void CloseHudWindow(WindowTypeId windowTypeId) =>
-            Open(_hudWindows, windowTypeId);
-
         public void OpenHud() =>
             Open(_hudWindows);
-
-        public void CloseHud() =>
-            Close(_hudWindows);
-
-        public void OpenSelectorWindow(WindowTypeId windowTypeId) =>
-            Open(_selectorWindows, windowTypeId);
-
-        public void CloseSelectorWindow(WindowTypeId windowTypeId) =>
-            Close(_selectorWindows, windowTypeId);
 
         public void Open(WindowTypeId windowTypeId)
         {
@@ -61,28 +43,11 @@ namespace Services.UIServices
             }
         }
 
-        private void Open(Dictionary<WindowTypeId, Window> windows, WindowTypeId windowTypeId)
-        {
-            Close(windows);
-            windows[windowTypeId].Open();
-        }
-
-        private void Close(Dictionary<WindowTypeId, Window> windows, WindowTypeId windowTypeId) =>
-            windows[windowTypeId].Close(true);
-
         private void Open(Dictionary<WindowTypeId, Window> windows)
         {
             foreach (Window window in windows.Values)
             {
                 window.Open();
-            }
-        }
-
-        private void Close(Dictionary<WindowTypeId, Window> windows)
-        {
-            foreach (Window window in windows.Values)
-            {
-                window.Close(true);
             }
         }
 

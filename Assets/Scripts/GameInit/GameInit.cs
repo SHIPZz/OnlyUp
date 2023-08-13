@@ -42,12 +42,25 @@ namespace GameInit
         public void Dispose()
         {
             WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
+            Application.focusChanged -= OnFocuesChanged;
         }
 
         private async UniTask InitWithDelay()
         {
             await _dataProvider.LoadInitialData();
             Init();
+            Application.focusChanged += OnFocuesChanged;
+        }
+
+        private void OnFocuesChanged(bool obj)
+        {
+            if (!obj)
+            {
+                OnInBackgroundChange(true);
+                return;
+            }
+            
+            OnInBackgroundChange(false);
         }
 
         private void Init()
@@ -78,7 +91,7 @@ namespace GameInit
         private void OnInBackgroundChange(bool inBackground)
         {
             AudioListener.pause = inBackground;
-            AudioListener.volume = inBackground ? 0f : 1f;
+            Time.timeScale = inBackground ? 0 : 1f;
         }
 
         private void InitializePlayerProvider(vThirdPersonController player)
